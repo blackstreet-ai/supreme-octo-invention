@@ -1,4 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Gen Dashboard
+
+A web application for generating images (and soon videos) using Fal AI models.
+
+## Tech Stack
+
+- **Next.js 15** with the App Router
+- **TypeScript** + **ESLint**
+- **Tailwind CSS** for styling
+- **Shadcn UI** components (`sidebar-07` dashboard layout)
+- **AI SDK** with **@ai-sdk/fal** provider
+
+## Current Features
+
+| Status | Feature |
+| ------ | -------- |
+| ✅ | Collapsible sidebar dashboard UI |
+| ✅ | Image generation API route (`/api/generate-image`) |
+| ✅ | Image generator UI with prompt + width/height |
+| ✅ | Environment-based Fal API key (`.env.local`) |
+| 🔜 | Video generation (duration, FPS, style) |
+| 🔜 | Batch processing & history |
+| 🔜 | Editing & export tools |
+
+## Getting Started
+
+1. **Clone & install**
+
+   ```bash
+   git clone https://github.com/blackstreet-ai/supreme-octo-invention.git
+   cd ai-gen-dashboard
+   npm install
+   ```
+
+2. **Set your Fal API key**
+
+   Create `.env.local` at the project root:
+
+   ```bash
+   FAL_API_KEY=your_fal_key_here
+   ```
+
+3. **Run the dev server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Visit <http://localhost:3000/dashboard> to try it.
+
+## Image Generation API
+
+`POST /api/generate-image`
+
+```jsonc
+{
+  "prompt": "A futuristic cityscape at dusk",
+  "width": 768,
+  "height": 768
+}
+```
+
+Response:
+
+```jsonc
+{
+  "url": "data:image/png;base64,…" // base-64 data URI
+}
+```
+
+## Roadmap
+
+- [ ] Video generation endpoint & UI
+- [ ] Batch processing & history view
+- [ ] Editing tools (in-painting, upscaling)
+- [ ] Export / download manager
+- [ ] Automated tests (Playwright + jest)
+
+---
+
+MIT © 2025 Blackstreet-AI
 
 ## Getting Started
 
