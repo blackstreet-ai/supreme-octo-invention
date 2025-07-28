@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { defaultImageModel } from "@/lib/fal";
+import { fal } from "@/lib/fal";
+import { experimental_generateImage as generateImage } from "ai";
 
 export const runtime = "nodejs"; // Use full Node runtime for fetch
 
@@ -38,17 +39,20 @@ export async function POST(req: NextRequest) {
       ...(params ?? {}),
     };
 
-    // Call Fal image model
-    const result = await defaultImageModel.generate(options);
+    // Call Fal image model using AI SDK helper
+    const { image } = await generateImage({
+      model: fal.image("fal-ai/fast-sdxl"),
+      prompt,
+      providerOptions: { fal: options as any },
+    });
 
-    if (result.error) {
-      return NextResponse.json(
-        { error: result.error.message },
-        { status: 500 }
-      );
+    const url = (image as any).url;
+
+    if (!url) {
+      return NextResponse.json({ error: "No image URL returned" }, { status: 500 });
     }
 
-    return NextResponse.json({ url: result.url });
+    return NextResponse.json({ url });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
