@@ -46,13 +46,14 @@ export async function POST(req: NextRequest) {
       providerOptions: { fal: options as any },
     });
 
-    const url = (image as any).url;
-
-    if (!url) {
-      return NextResponse.json({ error: "No image URL returned" }, { status: 500 });
+    // AI SDK returns a Uint8Array; convert to base64 data URI
+    const uint8 = (image as any).uint8Array as Uint8Array | undefined;
+    if (!uint8) {
+      return NextResponse.json({ error: "Fal did not return image bytes" }, { status: 500 });
     }
-
-    return NextResponse.json({ url });
+    const base64 = Buffer.from(uint8).toString("base64");
+    const dataUrl = `data:image/png;base64,${base64}`;
+    return NextResponse.json({ url: dataUrl });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
